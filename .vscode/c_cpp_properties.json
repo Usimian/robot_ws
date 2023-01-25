@@ -1,0 +1,20 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "ROS",
+            "compilerPath": "/usr/bin/gcc",
+            "compilerArgs": [],
+            "intelliSenseMode": "gcc-arm64",
+            "includePath": [
+                "/opt/ros/galactic/include/**",
+                "/usr/include/**",
+                // "/home/mw/Arduino/libraries/*.*"
+            ],
+            "forcedInclude": [],
+            "cStandard": "gnu11",
+            "cppStandard": "c++14",
+            "defines": []
+        }
+    ]
+}

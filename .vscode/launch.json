@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Joy Drive",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick_drive.launch.py"
+        },
+        {
+            "name": "Joy Full",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick.launch.py"
+        },
+        {
+            "name": "Twist_to_motors",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/no_joystick.launch.py"
+        },
+        {
+            "name": "Lidar",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/mw/robot_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_launch.py"
+        },
+    ]
+}
