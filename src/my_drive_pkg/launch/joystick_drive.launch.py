@@ -49,6 +49,7 @@ def generate_launch_description():
                 parameters=[{"serial_port": "/dev/ttyACM0", "base_width": 0.170, "use_sim_time": use_sim_time}],
                 output="screen",
             ),
+            # LCD display node
             Node(
                 package="pet_ros2_lcd_pkg",
                 executable="pet_lcd_driver_node",
