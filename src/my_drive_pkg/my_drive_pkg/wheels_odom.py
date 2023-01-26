@@ -24,12 +24,10 @@
 #       child_frame (string)
 
 import sys
-import time
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
-from std_msgs.msg import String
 import tf_transformations
 from nav_msgs.msg import Odometry
 from math import sin, cos, asin, pi, isnan

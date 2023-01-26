@@ -17,7 +17,7 @@
             "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick.launch.py"
         },
         {
-            "name": "Twist_to_motors",
+            "name": "No Joy",
             "type": "ros",
             "request": "launch",
             "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/no_joystick.launch.py"

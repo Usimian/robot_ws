@@ -14,6 +14,7 @@
 #       /v_battery : (Float32)  Current battery voltage (volts)
 
 import sys
+import time
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import ExternalShutdownException
@@ -78,6 +79,7 @@ class MyDrive(Node):
         s_list = rcv_str.split("#")
         enc_msg.left_motor_enc_val = int(s_list[0])
         enc_msg.right_motor_enc_val = int(s_list[1])
+        # enc_msg.stamp = self.get_clock().now().to_msg()
         self.pub_enc_vals.publish(enc_msg)  # Publish encoder total ticks
 
         # lcd_msg = String()
