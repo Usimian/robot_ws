@@ -13,11 +13,8 @@
 #       /encoder_vals : (arduino_msgs/EncoderVals)  Current left/right encoder values (ticks)
 #       /v_battery : (Float32)  Current battery voltage (volts)
 
-import sys
-import time
 import rclpy
 from rclpy.node import Node
-from rclpy.executors import ExternalShutdownException
 from std_msgs.msg import Float32
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
@@ -56,6 +53,9 @@ class MyDrive(Node):
         self.timer2 = self.create_timer(2, self.battery_check_callback)
         self.lcd_publish_row_1 = self.create_publisher(String, "/lcd_display/row1", 10)
         self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
+
+    def __exit__(self):
+        self.arduino.close()
 
     # Read current battery voltage
     def battery_check_callback(self):
@@ -154,15 +154,12 @@ def main(args=None):
     try:
         node = MyDrive()
         rclpy.spin(node)
+
     except KeyboardInterrupt:
         pass
 
-    except ExternalShutdownException:
-        sys.exit(1)
     finally:
-        node.arduino.close()
         node.destroy_node()
-        node.get_logger().info("drive node has shutdown")
         rclpy.try_shutdown()
 
 

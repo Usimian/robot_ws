@@ -41,15 +41,15 @@ def generate_launch_description():
                     }
                 ],
             ),
-            # Wheels odometry node
-            Node(
-                package="my_drive_pkg",
-                executable="wheels_odom_node",
-                name="wheels_odom",
-                parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
-                output="screen",
-            ),
-            # Move drive wheels per twist msg node
+            # # Wheels odometry node
+            # Node(
+            #     package="my_drive_pkg",
+            #     executable="wheels_odom_node",
+            #     name="wheels_odom",
+            #     parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
+            #     output="screen",
+            # ),
+            # Differential drive interface node
             Node(
                 name="drive",
                 package="my_drive_pkg",

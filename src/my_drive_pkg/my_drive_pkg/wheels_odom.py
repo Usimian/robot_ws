@@ -242,14 +242,12 @@ def main(args=None):
     try:
         wheels_odom_node = WheelsOdom()
         rclpy.spin(wheels_odom_node)
+
     except KeyboardInterrupt:
         pass
 
-    except ExternalShutdownException:
-        sys.exit(1)
     finally:
         wheels_odom_node.destroy_node()
-        wheels_odom_node.get_logger().info("wheel_odom_node node has shutdown")
         rclpy.try_shutdown()
 
 

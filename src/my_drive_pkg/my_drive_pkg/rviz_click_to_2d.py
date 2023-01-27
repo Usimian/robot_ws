@@ -116,14 +116,12 @@ def main(args=None):
     try:
         click_2d = Click_to_2d()
         rclpy.spin(click_2d)
+
     except KeyboardInterrupt:
         pass
 
-    except ExternalShutdownException:
-        sys.exit(1)
     finally:
         click_2d.destroy_node()
-        click_2d.get_logger().info("pose_to_2d node has shutdown")
         rclpy.try_shutdown()
 
 

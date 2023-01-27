@@ -102,14 +102,12 @@ def main(args=None):
     try:
         pet_lcd_driver_node = LcdDisplayNode()
         rclpy.spin(pet_lcd_driver_node)
+
     except KeyboardInterrupt:
-        print("**** ☠️ Ctrl-C detected...")
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
+
     finally:
         pet_lcd_driver_node.destroy_node()
-        pet_lcd_driver_node.get_logger().info("pet_lcd_driver_node node has shutdown")
         rclpy.shutdown()
 
 
