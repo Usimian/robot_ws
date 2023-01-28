@@ -24,7 +24,7 @@ def generate_launch_description():
 
     robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]), value_type=str)
 
-    sllidar_launch_path = get_package_share_directory("sllidar_ros2") + "/launch/sllidar_launch.py"
+    # sllidar_launch_path = get_package_share_directory("sllidar_ros2") + "/launch/sllidar_launch.py"
 
     # Slam toolbox node
     slam_toolbox_node = Node(
@@ -63,12 +63,33 @@ def generate_launch_description():
         output="screen",
         parameters=[robot_localization_file],
     )
+    # Lidar node
+    rplidar_node = Node(
+        package="rplidar_ros",
+        executable="rplidar_composition",
+        output="screen",
+        parameters=[
+            {
+                "serial_port": "/dev/serial/by-path/platform-3610000.xhci-usb-0:2.3:1.0-port0",
+                "frame_id": "laser",
+                "angle_compensate": True,
+                "scan_mode": "Standard",
+                "auto_standby": True,
+            }
+        ],
+    )
     # Move drive wheels per twist msg node
     drive_node = Node(
         name="drive",
         package="my_drive_pkg",
         executable="drive_node",
-        parameters=[{"serial_port": "/dev/ttyACM0", "base_width": 0.170, "use_sim_time": use_sim_time}],
+        parameters=[
+            {
+                "serial_port": "/dev/serial/by-path/platform-3610000.xhci-usb-0:2.2:1.0",
+                "base_width": 0.170,
+                "use_sim_time": use_sim_time,
+            }
+        ],
         output="screen",
     )
     # Wheels odometry node
@@ -120,7 +141,8 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            IncludeLaunchDescription(PythonLaunchDescriptionSource([sllidar_launch_path])),
+            # IncludeLaunchDescription(PythonLaunchDescriptionSource([sllidar_launch_path])),
+            rplidar_node,
             model_arg,
             slam_toolbox_node,
             robot_state_publisher_node,

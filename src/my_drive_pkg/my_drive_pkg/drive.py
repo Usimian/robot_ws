@@ -20,7 +20,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from my_drive_pkg.arduino import ArduinoSerial
 from arduino_msgs.msg import EncoderVals
-
+from std_srvs.srv import Empty
 
 # Two wheel differential drive node
 class MyDrive(Node):
@@ -53,6 +53,19 @@ class MyDrive(Node):
         self.timer2 = self.create_timer(2, self.battery_check_callback)
         self.lcd_publish_row_1 = self.create_publisher(String, "/lcd_display/row1", 10)
         self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
+
+        # Lidar messages (start/stop)
+        self.motor_start = self.create_client(Empty, 'start_motor')
+        if not self.motor_start.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('WARNING: start_motor service not available')
+
+        self.motor_stop = self.create_client(Empty, 'stop_motor')
+        if not self.motor_stop.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('WARNING: stop_motor service not available')
+        
+        self.motor_req = Empty.Request()
+
+        self.client_futures = []
 
     def __exit__(self):
         self.arduino.close()
@@ -147,6 +160,20 @@ class MyDrive(Node):
                     if vel > 0:  # Change to run forward
                         self.motor_run_right = 1
                         self.arduino.serialSend("<4#2#1>")
+
+    def send_start_motor_req(self):
+        if self.motor_start.service_is_ready():
+            print("Starting lidar...")
+            self.client_futures.append(self.motor_start.call_async(self.motor_req))
+        else:
+            print("start_motor not ready!")
+
+    def send_stop_motor_req(self):
+        if self.motor_stop.service_is_ready():
+            print("Stopping lidar...")
+            self.client_futures.append(self.motor_stop.call_async(self.motor_req))
+        else:
+            print("stop_motor not ready!")
 
 
 def main(args=None):

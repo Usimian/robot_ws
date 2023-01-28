@@ -49,6 +49,21 @@ def generate_launch_description():
             #     parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
             #     output="screen",
             # ),
+            # Lidar node
+            Node(
+                package="rplidar_ros",
+                executable="rplidar_composition",
+                output="screen",
+                parameters=[
+                    {
+                        "serial_port": "/dev/serial/by-path/platform-3610000.xhci-usb-0:2.3:1.0-port0",
+                        "frame_id": "laser",
+                        "angle_compensate": True,
+                        "scan_mode": "Boost",
+                        "auto_standby": True,
+                    }
+                ],
+            ),
             # Differential drive interface node
             Node(
                 name="drive",
