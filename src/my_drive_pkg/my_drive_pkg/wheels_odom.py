@@ -220,8 +220,7 @@ class WheelsOdom(Node):
         elif self.odomNew.pose.pose.orientation.z < -pi:
             self.odomNew.pose.pose.orientation.z += 2 * pi
 
-        # Compute the velocity
-        # self.get_clock().now().seconds_nanoseconds()
+        # Compute the x velocity and z angular velocity
         self.odomNew.header.stamp = self.get_clock().now().to_msg()
         delta_t = (
             self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec

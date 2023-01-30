@@ -24,8 +24,6 @@ def generate_launch_description():
 
     robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]), value_type=str)
 
-    # sllidar_launch_path = get_package_share_directory("sllidar_ros2") + "/launch/sllidar_launch.py"
-
     # Slam toolbox node
     slam_toolbox_node = Node(
         package="slam_toolbox",
@@ -106,7 +104,7 @@ def generate_launch_description():
                 "serial_port": "/dev/serial/by-path/platform-3610000.xhci-usb-0:2.3:1.0-port0",
                 "frame_id": "laser",
                 "angle_compensate": True,
-                "scan_mode": "Standard",
+                "scan_mode": "Express",
                 "auto_standby": True,
             }
         ],
