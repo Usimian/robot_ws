@@ -104,7 +104,7 @@ def generate_launch_description():
                 "serial_port": "/dev/serial/by-path/platform-3610000.xhci-usb-0:2.3:1.0-port0",
                 "frame_id": "laser",
                 "angle_compensate": True,
-                "scan_mode": "Express",
+                "scan_mode": "Standard",
                 "auto_standby": True,
             }
         ],

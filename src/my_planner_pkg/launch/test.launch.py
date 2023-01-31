@@ -17,19 +17,35 @@ def generate_launch_description():
     map_file_yaml = str(share_path / "maps/my_drive.yaml")
 
     nav2_controller_node = Node(
-        package="nav2_controller", executable="controller_server", name="controller_server", output="screen", parameters=[controller_yaml]
+        package="nav2_controller",
+        executable="controller_server",
+        name="controller_server",
+        output="screen",
+        parameters=[controller_yaml],
     )
 
     nav2_planner_node = Node(
-        package="nav2_planner", executable="planner_server", name="planner_server", output="screen", parameters=[planner_yaml]
+        package="nav2_planner",
+        executable="planner_server",
+        name="planner_server",
+        output="screen",
+        parameters=[planner_yaml],
     )
 
     nav2_recoveries_node = Node(
-        package="nav2_recoveries", executable="recoveries_server", name="recoveries_server", output="screen", parameters=[recovery_yaml]
+        package="nav2_recoveries",
+        executable="recoveries_server",
+        name="recoveries_server",
+        output="screen",
+        parameters=[recovery_yaml],
     )
 
     nav2_bt_navigator_node = Node(
-        package="nav2_bt_navigator", executable="bt_navigator", name="bt_navigator", output="screen", parameters=[bt_navigator_yaml]
+        package="nav2_bt_navigator",
+        executable="bt_navigator",
+        name="bt_navigator",
+        output="screen",
+        parameters=[bt_navigator_yaml],
     )
 
     # nav2_costmap_2d_node = Node(
@@ -41,10 +57,7 @@ def generate_launch_description():
         executable="map_server",
         name="map_server",
         output="screen",
-        parameters=[
-            {"use_sim_time": use_sim_time},
-            {"yaml_filename": map_file_yaml}
-        ],
+        parameters=[{"use_sim_time": use_sim_time}, {"yaml_filename": map_file_yaml}],
     )
 
     nav2_lifecycle_manager_node = Node(
