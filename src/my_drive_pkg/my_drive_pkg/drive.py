@@ -53,6 +53,8 @@ class MyDrive(Node):
         self.timer2 = self.create_timer(2, self.battery_check_callback)
         self.lcd_publish_row_1 = self.create_publisher(String, "/lcd_display/row1", 10)
         self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
+        self.battery_check_callback()
+        self.get_logger().info(f"Battery {self.v_bat:.2f}V")
 
         # Lidar messages (start/stop)
         self.motor_start = self.create_client(Empty, 'start_motor')

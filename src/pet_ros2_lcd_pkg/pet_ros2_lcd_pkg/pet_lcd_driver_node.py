@@ -1,40 +1,40 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 # coding = utf-8
-########################################################################################
-## (c) https://github.com/Pet-Series
-##     https://github.com/Pet-Series/pet_ros2_lcd_pkg
-##
-## Maintainer: stefan.kull@gmail.com
-## The MIT License (MIT)
-##
-## Subscribe:
-##      /lcd_display/row1       # Text to display on top row
-##      /lcd_display/row2       # Text to display on bottom row
-##
-## Prerequisite:
-##   $ sudo apt install i2c-tools
-##   $ sudo i2cdetect -y 1          <- Normaly 0x27 or 0x3F
-##   $ sudo chmod a+rw /dev/i2c-1   <- Give members of user/group i2c r/w to i2c interface.
-##
-## Prerequisite:
-##   $ sudo pip3 install smbus2
-##   $ sudo pip3 install smbus
-##
-## Launch sequence:
-##   1) $ ros2 run pet_ros2_lcd_pkg lcd_node
-##   2) $ ros2 topic pub /lcd_display/row3 std_msgs/msg/String "data: Text on row 3" -1
-##
+###############################################################################
+# (c) https://github.com/Pet-Series
+#     https://github.com/Pet-Series/pet_ros2_lcd_pkg
+#
+# Maintainer: stefan.kull@gmail.com
+# The MIT License (MIT)
+#
+# Subscribe:
+#      /lcd_display/row1       # Text to display on top row
+#      /lcd_display/row2       # Text to display on bottom row
+#
+# Prerequisite:
+#   $ sudo apt install i2c-tools
+#   $ sudo i2cdetect -y 1          <- Normaly 0x27 or 0x3F
+#   $ sudo chmod a+rw /dev/i2c-1   <- Give members of user/group i2c r/w to i2c interface.
+#
+# Prerequisite:
+#   $ sudo pip3 install smbus2
+#   $ sudo pip3 install smbus
+#
+# Launch sequence:
+#   1) $ ros2 run pet_ros2_lcd_pkg lcd_node
+#   2) $ ros2 topic pub /lcd_display/row3 std_msgs/msg/String "data: Text on row 3" -1
+#
 
 #  Include the ROS2 stuff...
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterDescriptor
 
 #  Include Linux/Ubuntu stuff...
-import sys
+# import sys
 from std_msgs.msg import String
-from time import *
+
+# from time import *
 
 # Load LCD-driver utility files in directory ./util/*.py (see also setup.py)
 import util.lcddriver
@@ -82,9 +82,10 @@ class LcdDisplayNode(Node):
             self.get_logger().info("pet_lcd_driver_node STARTED")
             self.get_logger().info(f"I2C: <{str(hex(self.LCD_I2C_ADDRESS))}>")
 
-        except:
+        except Exception as ex:
             # Note: a permission error can be fixed with a "sudo chmod a+rw /dev/i2c-1"
-            self.get_logger().error("pet_lcd_driver_node canceled:" + str(sys.exc_info()[1]))
+            self.get_logger().error("pet_lcd_driver_node canceled:" + str(ex))
+            # self.get_logger().error("pet_lcd_driver_node canceled:" + str(sys.exc_info()[1]))
 
     def lcd_update_row1_callback(self, msg):
         # Display msg on row 1 of lcd

@@ -8,13 +8,13 @@
             "intelliSenseMode": "gcc-arm64",
             "includePath": [
                 "/opt/ros/galactic/include/**",
-                "/usr/include/**",
-                // "/home/mw/Arduino/libraries/*.*"
+                "/usr/include/**"
             ],
             "forcedInclude": [],
             "cStandard": "gnu11",
             "cppStandard": "c++14",
-            "defines": []
+            "defines": [],
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ]
 }

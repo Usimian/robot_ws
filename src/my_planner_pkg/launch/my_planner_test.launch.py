@@ -26,7 +26,7 @@ def generate_launch_description():
         # respawn=use_respawn,
         # respawn_delay=2.0,
         parameters=[params_yaml],
-        remappings=[('cmd_vel', 'cmd_vel_raw')],
+        # remappings=[("cmd_vel", "cmd_vel_raw")],    # shunt through collision monitor
     )
 
     nav2_planner_node = Node(
@@ -69,6 +69,14 @@ def generate_launch_description():
     #     parameters=[{"use_sim_time": use_sim_time}, {"yaml_filename": map_file_yaml}],
     # )
 
+    # collision_monitor_cmd_node = Node(
+    #     package="nav2_collision_monitor",
+    #     executable="collision_monitor",
+    #     output="screen",
+    #     emulate_tty=True,
+    #     parameters=[params_yaml],
+    # )
+
     nav2_lifecycle_manager_node = Node(
         package="nav2_lifecycle_manager",
         executable="lifecycle_manager",
@@ -97,6 +105,7 @@ def generate_launch_description():
             # nav2_costmap_2d_node,
             # map_server_node,
             nav2_bt_navigator_node,
+            # collision_monitor_cmd_node,
             nav2_lifecycle_manager_node,
         ]
     )
