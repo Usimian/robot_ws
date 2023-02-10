@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
 #
-# Arduino control node
+# Two wheel differential drive node
+#
 #   Send left/right wheel velocities
 #   Read encoder values (20 Hz)
 #   Read battery voltage (0.5 Hz)
@@ -22,7 +22,7 @@ from my_drive_pkg.arduino import ArduinoSerial
 from arduino_msgs.msg import EncoderVals
 from std_srvs.srv import Empty
 
-# Two wheel differential drive node
+
 class MyDrive(Node):
     def __init__(self):
         super().__init__("drive")
@@ -64,7 +64,7 @@ class MyDrive(Node):
         self.motor_stop = self.create_client(Empty, 'stop_motor')
         if not self.motor_stop.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('WARNING: stop_motor service not available')
-        
+
         self.motor_req = Empty.Request()
 
         self.client_futures = []
@@ -85,7 +85,7 @@ class MyDrive(Node):
         lcd_msg.data = f"Batt {self.v_bat:.2f}V"
         self.lcd_publish_row_1.publish(lcd_msg)  # Display battery voltage on lcd
 
-    # Read Arduino wheel ticks
+    # Read current wheel ticks from Arduino
     def encoder_check_callback(self):
         self.arduino.serialSend("<1>")  # Request encoder values <left#right>
         rcv_str = self.arduino.serialReceive()  # wait for response or timeout
@@ -94,11 +94,11 @@ class MyDrive(Node):
         s_list = rcv_str.split("#")
         enc_msg.left_motor_enc_val = int(s_list[0])
         enc_msg.right_motor_enc_val = int(s_list[1])
-        # enc_msg.stamp = self.get_clock().now().to_msg()
+        enc_msg.stamp = self.get_clock().now().to_msg()
         self.pub_enc_vals.publish(enc_msg)  # Publish encoder total ticks
 
         # lcd_msg = String()
-        # lcd_msg.data = f"L: {enc_msg.left_motor_enc_val} R{enc_msg.right_motor_enc_val}"
+        # lcd_msg.data = f"{enc_msg.left_motor_enc_val},{enc_msg.right_motor_enc_val}"
         # self.lcd_publish_row_2.publish(lcd_msg)     # Display msg
 
     def calculate_left_and_right_target(self, msg):  # Convert twist msg to left and right velocities (mm/sec)

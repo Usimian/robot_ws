@@ -23,13 +23,12 @@
 #       odom_frame  (string)
 #       child_frame (string)
 
-import sys
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 import tf_transformations
 from nav_msgs.msg import Odometry
+from std_msgs.msg import String
 from math import sin, cos, asin, pi, isnan
 from arduino_msgs.msg import EncoderVals
 
@@ -91,7 +90,7 @@ class WheelsOdom(Node):
         # Publisher of odom message where orientation is quaternion
         self.odom_data_pub_quat = self.create_publisher(Odometry, "odom", 10)
 
-        # self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
+        self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
 
     #  Get wheel ticks, then compute and publish new odom
     def odometry_update_callback(self, msg):
@@ -115,31 +114,8 @@ class WheelsOdom(Node):
                 #     self.get_logger().info(f"distanceRight: {self.distanceRight}")
             self.lastCountR = rightCount
 
-            x = self.odomOld.pose.pose.position.x
-            # y = self.odomOld.pose.pose.position.y
-            # t = self.odomOld.pose.pose.orientation.z
-
             self.update_odom()
             self.publish_quat()
-
-            # now = time.time()
-            # lcd_msg = String()
-            # lcd_msg.data = f"odom: {(now - then)*1000:4.0f}"
-            # self.lcd_publish_row_2.publish(lcd_msg)
-
-            # self.get_logger().info(f"Delta time wheels_odom: {(now - then)*1000:4.0f}")
-            # self.get_logger().info(f"Delta time wheels_odom: {(now - then)*1000:4.0f}")
-
-            # if (
-            #     (x != self.odomOld.pose.pose.position.x)
-            #     # or (y != self.odomOld.pose.pose.position.y)
-            #     # or (t != self.odomOld.pose.pose.orientation.z)
-            # ):
-            #     self.get_logger().info(
-            #         f"X:{self.odomOld.pose.pose.position.x:.3f}"
-            #         # f"X:{self.odomOld.pose.pose.position.x:.3f} Y:{self.odomOld.pose.pose.position.y:.3f} T:{self.odomOld.pose.pose.orientation.z:.3f}"
-            #         # f"Xa:{self.odomNew.twist.twist.linear.x:.3f} Ya:{self.odomNew.twist.twist.linear.y:.3f} Ta:{self.odomNew.twist.twist.angular.z:.3f}"
-            #     )
 
     #  Get initial_2d message from either Rviz clicks or a manual pose publisher
     def set_initial_2d(self, msg):
@@ -208,7 +184,7 @@ class WheelsOdom(Node):
         if (
             isnan(self.odomNew.pose.pose.position.x)
             or isnan(self.odomNew.pose.pose.position.y)
-            or isnan(self.odomNew.pose.pose.position.z)
+            or isnan(self.odomNew.pose.pose.orientation.z)
         ):
             self.odomNew.pose.pose.position.x = self.odomOld.pose.pose.position.x
             self.odomNew.pose.pose.position.y = self.odomOld.pose.pose.position.y
@@ -225,6 +201,11 @@ class WheelsOdom(Node):
         delta_t = (
             self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec
         ) / 1000000000.0  # Duration in seconds
+
+        lcd_msg = String()
+        lcd_msg.data = f"dT:{delta_t}"
+        self.lcd_publish_row_2.publish(lcd_msg)     # Display msg
+
         if delta_t > 0:
             self.odomNew.twist.twist.linear.x = cycleDistance / delta_t
             self.odomNew.twist.twist.angular.z = cycleAngle / delta_t

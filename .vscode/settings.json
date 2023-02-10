@@ -19,7 +19,8 @@
         "/home/mw/robot_ws/build/my_drive_pkg",
         "/home/mw/robot_ws/install/my_drive_pkg/lib/python3.8/site-packages",
         "/home/mw/robot_ws/install/arduino_msgs/lib/python3.8/site-packages",
-        "/opt/ros/galactic/lib/python3.8/site-packages"
+        "/opt/ros/galactic/lib/python3.8/site-packages",
+        "./src/pet_ros2_lcd_pkg/pet_ros2_lcd_pkg"
     ],
     "python.linting.enabled": true,
     "cmake.configureOnOpen": true

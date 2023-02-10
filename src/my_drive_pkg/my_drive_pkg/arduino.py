@@ -39,7 +39,7 @@ class ArduinoSerial:
                 getSerialValue = bytes()
                 byteCount = -1  # last increment will be one too many
 
-                x = self.arduino.read() # Read next byte or timeout
+                x = self.arduino.read()     # Read next byte or timeout
                 if x == b'':    # Timeout
                     myStr = ""
                 else:
@@ -57,7 +57,6 @@ class ArduinoSerial:
                                 return ""
                         x = self.arduino.read()
                     myStr = getSerialValue.decode("ascii", errors="replace")
-
 
             except ValueError:
                 pass

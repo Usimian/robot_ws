@@ -12,9 +12,7 @@
 #       /goal_2d : (geometry_msgs/PoseStamped)
 #
 
-import sys
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 import math
@@ -52,7 +50,10 @@ class Click_to_2d(Node):
         goalPose.pose.position.z = 0.0
 
         roll, pitch, yaw = self.euler_from_quaternion(
-            msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w
+            msg.pose.orientation.x,
+            msg.pose.orientation.y,
+            msg.pose.orientation.z,
+            msg.pose.orientation.w
         )
         goalPose.pose.orientation.x = 0.0
         goalPose.pose.orientation.y = 0.0
@@ -75,7 +76,10 @@ class Click_to_2d(Node):
         initialPose.pose.position.z = 0.0
 
         roll, pitch, yaw = self.euler_from_quaternion(
-            msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w
+            msg.pose.pose.orientation.x,
+            msg.pose.pose.orientation.y,
+            msg.pose.pose.orientation.z,
+            msg.pose.pose.orientation.w,
         )
         initialPose.pose.orientation.x = 0.0
         initialPose.pose.orientation.y = 0.0
