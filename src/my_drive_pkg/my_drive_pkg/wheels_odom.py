@@ -32,6 +32,8 @@ from std_msgs.msg import String
 from math import sin, cos, asin, pi, isnan
 from arduino_msgs.msg import EncoderVals
 
+# from time import time
+
 # Robot physical constants
 TICKS_PER_REVOLUTION = 408.0  # Number of ticks for one wheel revolution
 WHEEL_RADIUS_METERS = 0.030  # Wheel radius in meters
@@ -94,7 +96,6 @@ class WheelsOdom(Node):
 
     #  Get wheel ticks, then compute and publish new odom
     def odometry_update_callback(self, msg):
-        # then = time.time()
         if self.initialPoseRecieved:
             leftCount = msg.left_motor_enc_val
             if leftCount != 0 and self.lastCountL != 0:  # Redundant check
@@ -202,13 +203,17 @@ class WheelsOdom(Node):
             self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec
         ) / 1000000000.0  # Duration in seconds
 
-        lcd_msg = String()
-        lcd_msg.data = f"dT:{delta_t}"
-        self.lcd_publish_row_2.publish(lcd_msg)     # Display msg
+        if delta_t < 0.0:
+            delta_t += 1.0  # nanosec rollover
 
-        if delta_t > 0:
-            self.odomNew.twist.twist.linear.x = cycleDistance / delta_t
-            self.odomNew.twist.twist.angular.z = cycleAngle / delta_t
+        # self.get_logger().info(f"dT:{delta_t:.3f}")
+
+        # lcd_msg = String()
+        # lcd_msg.data = f"dT:{delta_t:.3f}"
+        # self.lcd_publish_row_2.publish(lcd_msg)     # Display msg
+
+        self.odomNew.twist.twist.linear.x = cycleDistance / delta_t
+        self.odomNew.twist.twist.angular.z = cycleAngle / delta_t
 
         # Save the pose data for the next cycle
         self.odomOld.pose.pose.position.x = self.odomNew.pose.pose.position.x

@@ -46,7 +46,7 @@ class MyDrive(Node):
         self.pub_enc_vals = self.create_publisher(EncoderVals, "encoder_vals", 10)
         self.pub_batt_voltage = self.create_publisher(Float32, "v_battery", 10)
 
-        # Timer to read current encoder value
+        # Create timer to read current encoder value
         self.timer = self.create_timer(0.05, self.encoder_check_callback)
 
         # Battery check timer

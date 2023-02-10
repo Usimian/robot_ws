@@ -1,4 +1,3 @@
-import launch
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -42,13 +41,13 @@ def generate_launch_description():
                 ],
             ),
             # # Wheels odometry node
-            # Node(
-            #     package="my_drive_pkg",
-            #     executable="wheels_odom_node",
-            #     name="wheels_odom",
-            #     parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
-            #     output="screen",
-            # ),
+            Node(
+                package="my_drive_pkg",
+                executable="wheels_odom_node",
+                name="wheels_odom",
+                parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
+                output="screen",
+            ),
             # Lidar node
             Node(
                 package="rplidar_ros",
