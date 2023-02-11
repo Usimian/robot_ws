@@ -1,13 +1,10 @@
-from ament_index_python.packages import get_package_share_directory
 from ament_index_python.packages import get_package_share_path
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions import Command
-from launch.actions import IncludeLaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -52,7 +49,7 @@ def generate_launch_description():
     #     executable="static_transform_publisher",
     #     arguments=["0", "0", "0", "0", "0", "0", "odom", "base_link"],
     #     output="screen",
-        # parameters=[{"use_sim_time": use_sim_time}],
+    #     parameters=[{"use_sim_time": use_sim_time}],
     # )
     # Robot localization node using an Extended Kalman filter
     robot_localization_node = Node(
@@ -118,7 +115,7 @@ def generate_launch_description():
         output="screen",
     )
     # Wheels odometry node
-    odom_node = Node(
+    wheels_odom_node = Node(
         package="my_drive_pkg",
         executable="wheels_odom_node",
         name="wheels_odom",
@@ -150,13 +147,13 @@ def generate_launch_description():
         parameters=[{"topicImu": "/imu/data", "use_sim_time": use_sim_time}],
     )
     # Madgwick filter node
-    imu_madgwick_node = Node(
-        package="imu_filter_madgwick",
-        executable="imu_filter_madgwick_node",
-        name="imu_filter",
-        output="screen",
-        parameters=[str(share_path / "config/imu_filter.yaml"), {"use_sim_time": use_sim_time}],
-    )
+    # imu_madgwick_node = Node(
+    #     package="imu_filter_madgwick",
+    #     executable="imu_filter_madgwick_node",
+    #     name="imu_filter",
+    #     output="screen",
+    #     parameters=[str(share_path / "config/imu_filter.yaml"), {"use_sim_time": use_sim_time}],
+    # )
 
     return LaunchDescription(
         [
@@ -168,7 +165,7 @@ def generate_launch_description():
             joint_state_publisher_node,
             # odom_base_link_static_node,
             robot_localization_node,
-            odom_node,
+            wheels_odom_node,
             lcd_driver_node,
             click_2d_node,
             drive_node,
