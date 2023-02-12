@@ -32,8 +32,6 @@ from std_msgs.msg import String
 from math import sin, cos, asin, pi, isnan
 from arduino_msgs.msg import EncoderVals
 
-# from time import time
-
 # Robot physical constants
 TICKS_PER_REVOLUTION = 408.0  # Number of ticks for one wheel revolution
 WHEEL_RADIUS_METERS = 0.030  # Wheel radius in meters
@@ -114,6 +112,8 @@ class WheelsOdom(Node):
                 #     self.get_logger().info(f"lastCountR: {self.lastCountR}")
                 #     self.get_logger().info(f"distanceRight: {self.distanceRight}")
             self.lastCountR = rightCount
+
+            self.stampTicks = msg.stamp  # Save time ticks were read
 
             self.update_odom()
             self.publish_quat()
@@ -198,7 +198,7 @@ class WheelsOdom(Node):
             self.odomNew.pose.pose.orientation.z += 2 * pi
 
         # Compute the x velocity and z angular velocity
-        self.odomNew.header.stamp = self.get_clock().now().to_msg()
+        self.odomNew.header.stamp = self.stampTicks     # Clock time of encoderVals
         delta_t = (
             self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec
         ) / 1000000000.0  # Duration in seconds

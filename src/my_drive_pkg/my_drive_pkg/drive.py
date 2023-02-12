@@ -87,15 +87,21 @@ class MyDrive(Node):
 
     # Read current wheel ticks from Arduino
     def encoder_check_callback(self):
+        # t = self.get_clock().now().to_msg()     # read time
         self.arduino.serialSend("<1>")  # Request encoder values <left#right>
         rcv_str = self.arduino.serialReceive()  # wait for response or timeout
 
         enc_msg = EncoderVals()
+        enc_msg.stamp = self.get_clock().now().to_msg()     # stamp tick read time
         s_list = rcv_str.split("#")
         enc_msg.left_motor_enc_val = int(s_list[0])
         enc_msg.right_motor_enc_val = int(s_list[1])
-        enc_msg.stamp = self.get_clock().now().to_msg()
         self.pub_enc_vals.publish(enc_msg)  # Publish encoder total ticks
+
+        # dt = (self.get_clock().now().to_msg().nanosec-t.nanosec) / 1000000000.0  # Duration in seconds
+        # if dt < 0.0:
+        #     dt += 1.0  # nanosec rollover
+        # self.get_logger().info(f"dT: {dt:.4f}")
 
         # lcd_msg = String()
         # lcd_msg.data = f"{enc_msg.left_motor_enc_val},{enc_msg.right_motor_enc_val}"
@@ -165,17 +171,17 @@ class MyDrive(Node):
 
     def send_start_motor_req(self):
         if self.motor_start.service_is_ready():
-            print("Starting lidar...")
+            self.get_logger().info("Starting lidar...")
             self.client_futures.append(self.motor_start.call_async(self.motor_req))
         else:
-            print("start_motor not ready!")
+            self.get_logger().info("start_motor not ready!")
 
     def send_stop_motor_req(self):
         if self.motor_stop.service_is_ready():
-            print("Stopping lidar...")
+            self.get_logger().info("Stopping lidar...")
             self.client_futures.append(self.motor_stop.call_async(self.motor_req))
         else:
-            print("stop_motor not ready!")
+            self.get_logger().info("stop_motor not ready!")
 
 
 def main(args=None):
