@@ -180,7 +180,7 @@ private:
   double _poll;
   std::string _topic;
   std::string _frameId;
-  bool _debug;
+  bool _debug = false;
 };
 
 int main(int argc, char *argv[])
@@ -188,11 +188,11 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<I2CPublisher>();
-  node->declare_parameter("i2c_address");
-  node->declare_parameter("frame_id");
-  node->declare_parameter("poll");
-  node->declare_parameter("topic");
-  node->declare_parameter("debug");
+  node->declare_parameter("i2c_address", rclcpp::PARAMETER_INTEGER);
+  node->declare_parameter("frame_id", rclcpp::PARAMETER_STRING);
+  node->declare_parameter("poll", rclcpp::PARAMETER_DOUBLE);
+  node->declare_parameter("topic", rclcpp::PARAMETER_STRING);
+  node->declare_parameter("debug", rclcpp::PARAMETER_BOOL);
 
   node->initialize();
 

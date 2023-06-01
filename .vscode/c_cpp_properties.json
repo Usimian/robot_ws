@@ -7,7 +7,7 @@
             "compilerArgs": [],
             "intelliSenseMode": "gcc-arm64",
             "includePath": [
-                "/opt/ros/galactic/include/**",
+                "/opt/ros/humble/install/include/**",
                 "/usr/include/**"
             ],
             "forcedInclude": [],

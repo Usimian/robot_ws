@@ -10,7 +10,7 @@
         "/opt/ros/galactic/lib/python3.8/site-packages"
     ],
     "python.linting.flake8Enabled": true,
-    "python.formatting.provider": "black",
+    "python.formatting.provider": "none",
     "python.analysis.extraPaths": [
         "/home/mw/robot_ws/build/pet_ros2_lcd_pkg",
         "/home/mw/robot_ws/install/pet_ros2_lcd_pkg/lib/python3.8/site-packages",
@@ -23,5 +23,11 @@
         "./src/pet_ros2_lcd_pkg/pet_ros2_lcd_pkg"
     ],
     "python.linting.enabled": true,
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "*.ipp": "cpp"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    }
 }
