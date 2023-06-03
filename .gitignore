@@ -4,3 +4,9 @@
 /frames.pdf
 /install
 /log
+/geographic_info
+/geographiclib
+/imu_tools
+/joint_state_publisher
+/robot_localization
+/xacro
