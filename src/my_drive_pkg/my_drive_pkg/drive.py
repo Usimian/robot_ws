@@ -44,6 +44,7 @@ class MyDrive(Node):
 
         self.motor_run_left = 0  # - = backwards, 0 = stop, + = forwards
         self.motor_run_right = 0  # - = backwards, 0 = stop, + = forwards
+        self.get_logger().info(f'port: {self.serial_port}')
         self.arduino = ArduinoSerial(self.serial_port)
         self.v_bat = 0.0
 
@@ -204,14 +205,14 @@ def main(args=None):
     """Entry point."""
     rclpy.init(args=args)
     try:
-        node = MyDrive()
-        rclpy.spin(node)
+        drive_node = MyDrive()
+        rclpy.spin(drive_node)
 
     except KeyboardInterrupt:
         pass
 
     finally:
-        node.destroy_node()
+        drive_node.destroy_node()
         rclpy.try_shutdown()
 
 

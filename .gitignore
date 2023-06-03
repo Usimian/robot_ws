@@ -10,3 +10,10 @@
 /joint_state_publisher
 /robot_localization
 /xacro
+src/geographic_info
+src/geographic_info
+src/imu_tools
+src/joint_state_publisher
+src/robot_localization
+src/rplidar_ros
+src/xacro

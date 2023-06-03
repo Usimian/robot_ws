@@ -71,7 +71,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {
-                'serial_port': '/dev/serial/by-path/platform-3610000.xhci-usb-0:2.3:1.0-port0',
+                'serial_port': '/dev/ttyUSB0',
                 'frame_id': 'laser',
                 'angle_compensate': True,
                 'scan_mode': 'Standard',
@@ -86,7 +86,7 @@ def generate_launch_description():
         executable='drive_node',
         parameters=[
             {
-                'serial_port': '/dev/serial/by-path/platform-3610000.xhci-usb-0:2.2:1.0',
+                'serial_port': '/dev/ttyACM0',
                 'base_width': 0.170,
                 'use_sim_time': use_sim_time,
             }
@@ -108,13 +108,13 @@ def generate_launch_description():
         output='screen',
     )
     # LCD driver node
-    lcd_driver_node = Node(
-        package='pet_ros2_lcd_pkg',
-        executable='pet_lcd_driver_node',
-        name='lcd_display',
-        parameters=[{'use_sim_time': use_sim_time}],
-        output='screen',
-    )
+    # lcd_driver_node = Node(
+    #     package='pet_ros2_lcd_pkg',
+    #     executable='pet_lcd_driver_node',
+    #     name='lcd_display',
+    #     parameters=[{'use_sim_time': use_sim_time}],
+    #     output='screen',
+    # )
     # Initial/goal pose node
     click_2d_node = Node(
         package='my_drive_pkg',
@@ -124,21 +124,21 @@ def generate_launch_description():
         output='screen',
     )
     # ICM-20948 9-dof IMU node
-    imu_node = Node(
-        package='ros_qwiic_icm_20948',
-        executable='ros_qwiic_icm_20948',
-        name='ros_qwiic_icm_20948',
-        output='screen',
-        parameters=[{'topicImu': '/imu/data_raw', 'use_sim_time': use_sim_time}],
-    )
+    # imu_node = Node(
+    #     package='ros_qwiic_icm_20948',
+    #     executable='ros_qwiic_icm_20948',
+    #     name='ros_qwiic_icm_20948',
+    #     output='screen',
+    #     parameters=[{'topicImu': '/imu/data_raw', 'use_sim_time': use_sim_time}],
+    # )
     # Madgwick filter node
-    imu_madgwick_node = Node(
-        package='imu_filter_madgwick',
-        executable='imu_filter_madgwick_node',
-        name='imu_filter_madgwick',
-        output='screen',
-        parameters=[str(share_path / 'config/imu_filter.yaml'), {'use_sim_time': use_sim_time}],
-    )
+    # imu_madgwick_node = Node(
+    #     package='imu_filter_madgwick',
+    #     executable='imu_filter_madgwick_node',
+    #     name='imu_filter_madgwick',
+    #     output='screen',
+    #     parameters=[str(share_path / 'config/imu_filter.yaml'), {'use_sim_time': use_sim_time}],
+    # )
 
     return LaunchDescription(
         [
@@ -151,12 +151,10 @@ def generate_launch_description():
             # odom_base_link_static_node,
             robot_localization_node,
             odom_node,
-            lcd_driver_node,
+            # lcd_driver_node,
             click_2d_node,
             drive_node,
-            # joystick_node,
-            # teleop_joy_node,
-            imu_node,
-            imu_madgwick_node,
+            # imu_node,
+            # imu_madgwick_node,
         ]
     )
