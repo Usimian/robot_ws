@@ -1,17 +1,5 @@
 """RVIZ click to 2D."""
 
-# !/usr/bin/env python3
-# Convert initial_pose and goal_pose clicks to 2d
-#
-#   Subscribe:
-#       /initial_pose : (geometry_msgs/PoseWithCovarianceStamped)
-#       /goal_pose : (geometry_msgs/PoseStamped)
-#
-#   Publish:
-#       /initial_2d : (geometry_msgs/PoseStamped)
-#       /goal_2d : (geometry_msgs/PoseStamped)
-#
-
 import math
 
 from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
@@ -24,10 +12,15 @@ from std_msgs.msg import String
 
 class Click_to_2d(Node):
     """
-    Convert initial pose/goal to 2d.
+    Convert initial_pose/goal_pose clicks to 2d.
 
-    Subscribe to rviz pose topics
-    Publish 2d poses
+    Subscribe:
+        /initial_pose : (geometry_msgs/PoseWithCovarianceStamped)
+        /goal_pose : (geometry_msgs/PoseStamped)
+
+    Publish:
+        /initial_2d : (geometry_msgs/PoseStamped)
+        /goal_2d : (geometry_msgs/PoseStamped)
     """
 
     def __init__(self):

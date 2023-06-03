@@ -11,12 +11,6 @@
             "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick_drive.launch.py"
         },
         {
-            "name": "Joy Full",
-            "type": "ros",
-            "request": "launch",
-            "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick.launch.py"
-        },
-        {
             "name": "No Joy",
             "type": "ros",
             "request": "launch",

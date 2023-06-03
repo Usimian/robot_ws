@@ -1,26 +1,11 @@
 {
     "python.autoComplete.extraPaths": [
-        "/home/mw/robot_ws/build/pet_ros2_lcd_pkg",
-        "/home/mw/robot_ws/install/pet_ros2_lcd_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/build/my_planner_pkg",
-        "/home/mw/robot_ws/install/my_planner_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/build/my_drive_pkg",
-        "/home/mw/robot_ws/install/my_drive_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/install/arduino_msgs/lib/python3.8/site-packages",
-        "/opt/ros/galactic/lib/python3.8/site-packages"
+        "/opt/ros/humble/install/lib/python3.8/site-packages"
     ],
     "python.linting.flake8Enabled": true,
     "python.formatting.provider": "none",
     "python.analysis.extraPaths": [
-        "/home/mw/robot_ws/build/pet_ros2_lcd_pkg",
-        "/home/mw/robot_ws/install/pet_ros2_lcd_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/build/my_planner_pkg",
-        "/home/mw/robot_ws/install/my_planner_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/build/my_drive_pkg",
-        "/home/mw/robot_ws/install/my_drive_pkg/lib/python3.8/site-packages",
-        "/home/mw/robot_ws/install/arduino_msgs/lib/python3.8/site-packages",
-        "/opt/ros/galactic/lib/python3.8/site-packages",
-        "./src/pet_ros2_lcd_pkg/pet_ros2_lcd_pkg"
+        "/opt/ros/humble/install/lib/python3.8/site-packages",
     ],
     "python.linting.enabled": true,
     "cmake.configureOnOpen": true,
