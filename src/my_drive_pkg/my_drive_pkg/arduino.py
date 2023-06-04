@@ -28,13 +28,13 @@ class ArduinoSerial:
 
     def serialSend(self, command):
         """Send command to serial port."""
-        self.arduino.write(bytes(command, encoding='utf8'))  # Arduino
+        self.arduino.write(bytes(command, encoding="utf8"))  # Arduino
         self.lastTime = time.time()
         self.cmd_wait = True
 
     def serialReceive(self):
         """Receive serial port bytes, return string."""
-        if self.cmd_wait:       # Set if command returns response
+        if self.cmd_wait:  # Set if command returns response
             try:
                 startMarker = 60  # '<'
                 endMarker = 62  # '>'
@@ -42,9 +42,9 @@ class ArduinoSerial:
                 getSerialValue = bytes()
                 byteCount = -1  # last increment will be one too many
 
-                x = self.arduino.read()     # Read next byte or timeout
-                if x == b'':    # Timeout
-                    myStr = ''
+                x = self.arduino.read()  # Read next byte or timeout
+                if x == b"":  # Timeout
+                    myStr = ""
                 else:
                     # wait for the start character
                     while ord(x) != startMarker:
@@ -57,9 +57,9 @@ class ArduinoSerial:
                             byteCount += 1
                             if byteCount > 100:
                                 self.cmd_wait = False
-                                return ''
+                                return ""
                         x = self.arduino.read()
-                    myStr = getSerialValue.decode('ascii', errors='replace')
+                    myStr = getSerialValue.decode("ascii", errors="replace")
 
             except ValueError:
                 pass

@@ -1,4 +1,4 @@
-"""Launch drive system without joystick packages."""
+"""Launch complete system without joystick packages."""
 from ament_index_python.packages import get_package_share_path
 
 from launch import LaunchDescription
@@ -25,8 +25,6 @@ def generate_launch_description():
 
     robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]), value_type=str)
 
-    # sllidar_launch_path = get_package_share_directory('sllidar_ros2') + '/launch/sllidar_launch.py'
-
     # Slam toolbox node
     slam_toolbox_node = Node(
         package="slam_toolbox",
@@ -46,10 +44,10 @@ def generate_launch_description():
     joint_state_publisher_node = Node(
         package="joint_state_publisher",
         executable="joint_state_publisher",
-        parameters=[{"use_sim_time": use_sim_time}],
         output="screen",
+        parameters=[{"use_sim_time": use_sim_time}],
     )
-    # # Odom -> base_footprint static transform node
+    # Odom -> base_footprint static transform node
     # odom_base_link_static_node = Node(
     #     package='tf2_ros',
     #     executable='static_transform_publisher',
@@ -61,6 +59,7 @@ def generate_launch_description():
     robot_localization_node = Node(
         package="robot_localization",
         executable="ekf_node",
+        name="ekf_filter_node",
         output="screen",
         parameters=[robot_localization_file],
     )
@@ -79,32 +78,52 @@ def generate_launch_description():
             }
         ],
     )
+    # Connect to joystick, publish /joy messages
+    # joystick_node = Node(
+    #     name='joy_node',
+    #     package='joy',
+    #     executable='joy_node',
+    #     output='screen',
+    #     parameters=[
+    #         {
+    #             'dev_name': 'wireless_controller',
+    #             'deadzone': 0.3,
+    #             'autorepeat_rate': 0.0,
+    #             'use_sim_time': use_sim_time,
+    #         }
+    #     ],
+    # )
+    # Convert /joy messages to /cmd_vel messages and publish
+    # teleop_joy_node = Node(
+    #     name='teleop_twist_joy_node',
+    #     package='teleop_twist_joy',
+    #     executable='teleop_node',
+    #     parameters=[
+    #         {
+    #             'axis_linear.x': 1,
+    #             'axis_angular.yaw': 0,
+    #             'scale_linear.x': 1.0,
+    #             'scale_angular.yaw': 0.5,
+    #             'enable_button': 0,
+    #             'require_enable_button': False,
+    #             'use_sim_time': use_sim_time,
+    #         }
+    #     ],
+    # )
     # Move drive wheels per twist msg node
     drive_node = Node(
         name="drive",
         package="my_drive_pkg",
         executable="drive_node",
-        parameters=[
-            {
-                "serial_port": "/dev/ttyACM0",
-                "base_width": 0.170,
-                "use_sim_time": use_sim_time,
-            }
-        ],
+        parameters=[{"serial_port": "/dev/ttyACM0", "base_width": 0.170, "use_sim_time": use_sim_time}],
         output="screen",
     )
     # Wheels odometry node
-    odom_node = Node(
+    wheels_odom_node = Node(
         package="my_drive_pkg",
         executable="wheels_odom_node",
         name="wheels_odom",
-        parameters=[
-            {
-                "odom_frame": "odom",
-                "child_frame": "base_link",
-                "use_sim_time": use_sim_time,
-            }
-        ],
+        parameters=[{"odom_frame": "odom", "child_frame": "base_link", "use_sim_time": use_sim_time}],
         output="screen",
     )
     # LCD driver node
@@ -124,18 +143,18 @@ def generate_launch_description():
         output="screen",
     )
     # ICM-20948 9-dof IMU node
-    # imu_node = Node(
-    #     package='ros_qwiic_icm_20948',
-    #     executable='ros_qwiic_icm_20948',
-    #     name='ros_qwiic_icm_20948',
-    #     output='screen',
-    #     parameters=[{'topicImu': '/imu/data_raw', 'use_sim_time': use_sim_time}],
-    # )
+    imu_node = Node(
+        package="ros_qwiic_icm_20948",
+        executable="ros_qwiic_icm_20948",
+        name="ros_qwiic_icm_20948",
+        output="screen",
+        parameters=[{"topicImu": "/imu/data", "use_sim_time": use_sim_time}],
+    )
     # Madgwick filter node
     imu_madgwick_node = Node(
         package="imu_filter_madgwick",
         executable="imu_filter_madgwick_node",
-        name="imu_filter_madgwick",
+        name="imu_filter",
         output="screen",
         parameters=[str(share_path / "config/imu_filter.yaml"), {"use_sim_time": use_sim_time}],
     )
@@ -150,11 +169,13 @@ def generate_launch_description():
             joint_state_publisher_node,
             # odom_base_link_static_node,
             robot_localization_node,
-            odom_node,
+            wheels_odom_node,
             lcd_driver_node,
             click_2d_node,
             drive_node,
-            # imu_node,
+            # joystick_node,
+            # teleop_joy_node,
+            imu_node,
             imu_madgwick_node,
         ]
     )

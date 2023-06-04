@@ -17,3 +17,5 @@ src/joint_state_publisher
 src/robot_localization
 src/rplidar_ros
 src/xacro
+src/tf_transformations
+src/teleop_twist_joy

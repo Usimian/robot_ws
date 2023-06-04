@@ -3,7 +3,7 @@
         "/opt/ros/humble/install/lib/python3.8/site-packages"
     ],
     "python.linting.flake8Enabled": true,
-    "python.formatting.provider": "none",
+    "python.formatting.provider": "black",
     "python.analysis.extraPaths": [
         "/opt/ros/humble/install/lib/python3.8/site-packages",
     ],
@@ -15,5 +15,10 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "editor.defaultFormatter": "ms-python.black-formatter"
-}
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "python.linting.flake8Args": [
+        "--max-line-length=119",
+        "--ignore=E402,F841,F401,E302,E305,W503,W504,E203,Q000",
+    ],}
+
+

@@ -54,12 +54,12 @@ class WheelsOdom(Node):
 
     def __init__(self):
         """Init class."""
-        super().__init__('wheels_odom')
-        self.get_logger().info('wheels_odom node STARTED')
+        super().__init__("wheels_odom")
+        self.get_logger().info("wheels_odom node STARTED")
 
         # Parameters
-        self.odom_frame = self.declare_parameter('odom_frame', 'odom').value
-        self.child_frame = self.declare_parameter('child_frame', 'base_footprint').value
+        self.odom_frame = self.declare_parameter("odom_frame", "odom").value
+        self.child_frame = self.declare_parameter("child_frame", "base_footprint").value
 
         # Initial pose
         self.initialX = 0.0
@@ -95,15 +95,15 @@ class WheelsOdom(Node):
         self.odomOld.pose.pose.orientation.z = self.initialTheta
 
         # Subscriber to initial_2d (from initial_pose)
-        self.create_subscription(PoseStamped, 'initial_2d', self.set_initial_2d, 10)
+        self.create_subscription(PoseStamped, "initial_2d", self.set_initial_2d, 10)
 
         # Subscriber to encoder_vals
-        self.create_subscription(EncoderVals, 'encoder_vals', self.odometry_update_callback, 10)
+        self.create_subscription(EncoderVals, "encoder_vals", self.odometry_update_callback, 10)
 
         # Publisher of odom message where orientation is quaternion
-        self.odom_data_pub_quat = self.create_publisher(Odometry, 'odom', 10)
+        self.odom_data_pub_quat = self.create_publisher(Odometry, "odom", 10)
 
-        self.lcd_publish_row_2 = self.create_publisher(String, '/lcd_display/row2', 10)
+        self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
 
     def odometry_update_callback(self, msg):
         """Get wheel ticks, then compute and publish new odom."""
@@ -137,7 +137,7 @@ class WheelsOdom(Node):
         self.odomOld.pose.pose.position.y = msg.pose.position.y
         self.odomOld.pose.pose.orientation.z = msg.pose.orientation.z
         self.initialPoseRecieved = True
-        self.get_logger().info('initial_2d received')
+        self.get_logger().info("initial_2d received")
 
     def publish_quat(self):
         """Publish an Odometry message in quaternion format."""
@@ -195,11 +195,8 @@ class WheelsOdom(Node):
         self.odomNew.pose.pose.orientation.z = cycleAngle + self.odomOld.pose.pose.orientation.z
 
         # Prevent lockup from a single bad cycle
-        if (
-            isnan(self.odomNew.pose.pose.position.x)
-            or isnan(self.odomNew.pose.pose.position.y)
-            or isnan(self.odomNew.pose.pose.orientation.z)
-        ):
+        poseNew = self.odomNew.pose.pose
+        if isnan(poseNew.position.x) or isnan(poseNew.position.y) or isnan(poseNew.orientation.z):
             self.odomNew.pose.pose.position.x = self.odomOld.pose.pose.position.x
             self.odomNew.pose.pose.position.y = self.odomOld.pose.pose.position.y
             self.odomNew.pose.pose.orientation.z = self.odomOld.pose.pose.orientation.z
@@ -211,11 +208,8 @@ class WheelsOdom(Node):
             self.odomNew.pose.pose.orientation.z += 2 * pi
 
         # Compute the x velocity and z angular velocity
-        self.odomNew.header.stamp = self.stampTicks     # Clock time of encoderVals
-        delta_t = (
-            self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec
-        ) / 1000000000.0  # Duration in seconds
-
+        self.odomNew.header.stamp = self.stampTicks  # Clock time of encoderVals
+        delta_t = (self.odomNew.header.stamp.nanosec - self.odomOld.header.stamp.nanosec) / 1000000000.0  # Delta Secs
         if delta_t < 0.0:
             delta_t += 1.0  # nanosec rollover
 
@@ -250,5 +244,5 @@ def main(args=None):
         rclpy.try_shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

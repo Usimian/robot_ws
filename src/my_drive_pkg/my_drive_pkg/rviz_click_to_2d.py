@@ -25,33 +25,30 @@ class Click_to_2d(Node):
 
     def __init__(self):
         """Init class."""
-        super().__init__('pose_to_2d')
-        self.get_logger().info('pose_to_2d node STARTED')
+        super().__init__("pose_to_2d")
+        self.get_logger().info("pose_to_2d node STARTED")
 
         # Create publisher/subscriber topics
-        self.pub_initial_2d = self.create_publisher(PoseStamped, 'initial_2d', 10)
-        self.pub_goal_2d = self.create_publisher(PoseStamped, 'goal_2d', 10)
-        self.create_subscription(PoseWithCovarianceStamped, 'initial_pose', self.handle_initial_pose, 10)
-        self.create_subscription(PoseStamped, 'goal_pose', self.handle_goal_pose, 10)
+        self.pub_initial_2d = self.create_publisher(PoseStamped, "initial_2d", 10)
+        self.pub_goal_2d = self.create_publisher(PoseStamped, "goal_2d", 10)
+        self.create_subscription(PoseWithCovarianceStamped, "initial_pose", self.handle_initial_pose, 10)
+        self.create_subscription(PoseStamped, "goal_pose", self.handle_goal_pose, 10)
 
-        self.lcd_publish_row_2 = self.create_publisher(String, '/lcd_display/row2', 10)
+        self.lcd_publish_row_2 = self.create_publisher(String, "/lcd_display/row2", 10)
 
     def handle_goal_pose(self, msg):
         """Goal position clicked."""
         goalPose = PoseStamped()
-        self.get_logger().info(f'goal_pose: {msg.pose}')
+        self.get_logger().info(f"goal_pose: {msg.pose}")
 
-        goalPose.header.frame_id = 'map'
+        goalPose.header.frame_id = "map"
         goalPose.header.stamp = msg.header.stamp
         goalPose.pose.position.x = msg.pose.position.x
         goalPose.pose.position.y = msg.pose.position.y
         goalPose.pose.position.z = 0.0
 
         roll, pitch, yaw = self.euler_from_quaternion(
-            msg.pose.orientation.x,
-            msg.pose.orientation.y,
-            msg.pose.orientation.z,
-            msg.pose.orientation.w
+            msg.pose.orientation.x, msg.pose.orientation.y, msg.pose.orientation.z, msg.pose.orientation.w
         )
         goalPose.pose.orientation.x = 0.0
         goalPose.pose.orientation.y = 0.0
@@ -60,15 +57,15 @@ class Click_to_2d(Node):
         self.pub_goal_2d.publish(goalPose)
 
         lcd_msg = String()
-        lcd_msg.data = f'Goal {goalPose.pose.position.x:.2f},{goalPose.pose.position.y:.2f}'
+        lcd_msg.data = f"Goal {goalPose.pose.position.x:.2f},{goalPose.pose.position.y:.2f}"
         self.lcd_publish_row_2.publish(lcd_msg)
 
     def handle_initial_pose(self, msg):
         """Click initial position."""
         initialPose = PoseStamped()
-        self.get_logger().info(f'initial_pose: {msg.pose.pose}')
+        self.get_logger().info(f"initial_pose: {msg.pose.pose}")
 
-        initialPose.header.frame_id = 'map'
+        initialPose.header.frame_id = "map"
         initialPose.header.stamp = msg.header.stamp
         initialPose.pose.position.x = msg.pose.pose.position.x
         initialPose.pose.position.y = msg.pose.pose.position.y
@@ -85,10 +82,10 @@ class Click_to_2d(Node):
         initialPose.pose.orientation.z = yaw
         initialPose.pose.orientation.w = 0.0
         self.pub_initial_2d.publish(initialPose)
-        self.get_logger().info(f'initial_pose: {initialPose}')
+        self.get_logger().info(f"initial_pose: {initialPose}")
 
         lcd_msg = String()
-        lcd_msg.data = f'Init {initialPose.pose.position.x:.2f},{initialPose.pose.position.y:.2f}'
+        lcd_msg.data = f"Init {initialPose.pose.position.x:.2f},{initialPose.pose.position.y:.2f}"
         self.lcd_publish_row_2.publish(lcd_msg)
 
     def euler_from_quaternion(self, x, y, z, w):
@@ -130,5 +127,5 @@ def main(args=None):
         rclpy.try_shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
