@@ -16,32 +16,32 @@ def generate_launch_description():
         description='Use simulation/Gazebo clock'
     )
     # Publish /joy messages from connected joystick controller
-    joystick_node = Node(
-        name='joy_node',
-        package='joy',
-        executable='joy_node',
-        output='screen',
-        parameters=[
-            {'dev_name': 'wireless_controller', 'deadzone': 0.3, 'autorepeat_rate': 0.0, 'use_sim_time': use_sim_time}
-        ],
-    )
+    # joystick_node = Node(
+    #     name='joy_node',
+    #     package='joy',
+    #     executable='joy_node',
+    #     output='screen',
+    #     parameters=[
+    #         {'dev_name': 'wireless_controller', 'deadzone': 0.3, 'autorepeat_rate': 0.0, 'use_sim_time': use_sim_time}
+    #     ],
+    # )
     # Convert /joy message to /cmd_vel message and publish
-    teleop_joy_node = Node(
-        name='teleop_twist_joy_node',
-        package='teleop_twist_joy',
-        executable='teleop_node',
-        parameters=[
-            {
-                'axis_linear.x': 1,
-                'axis_angular.yaw': 0,
-                'scale_linear.x': 1.0,
-                'scale_angular.yaw': 0.5,
-                'enable_button': 0,
-                'require_enable_button': False,
-                'use_sim_time': use_sim_time,
-            }
-        ],
-    )
+    # teleop_joy_node = Node(
+    #     name='teleop_twist_joy_node',
+    #     package='teleop_twist_joy',
+    #     executable='teleop_node',
+    #     parameters=[
+    #         {
+    #             'axis_linear.x': 1,
+    #             'axis_angular.yaw': 0,
+    #             'scale_linear.x': 1.0,
+    #             'scale_angular.yaw': 0.5,
+    #             'enable_button': 0,
+    #             'require_enable_button': False,
+    #             'use_sim_time': use_sim_time,
+    #         }
+    #     ],
+    # )
     # # Wheels odometry node
     wheels_odom_node = Node(
         package='my_drive_pkg',
@@ -85,8 +85,8 @@ def generate_launch_description():
 
     ld.add_action(declare_use_sim_time_argument)
 
-    ld.add_action(joystick_node)
-    ld.add_action(teleop_joy_node)
+    # ld.add_action(joystick_node)
+    # ld.add_action(teleop_joy_node)
     ld.add_action(wheels_odom_node)
     ld.add_action(rplidar_node)
     ld.add_action(drive_node)
