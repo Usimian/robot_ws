@@ -142,6 +142,13 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}],
         output="screen",
     )
+    # TOF sensor node
+    tof_node = Node(
+        package='ros_qwiic_tof',
+        executable='ros_qwiic_tof',
+        name='ros_qwiic_tof',
+        output='screen',
+    )
     # ICM-20948 9-dof IMU node
     imu_node = Node(
         package="ros_qwiic_icm_20948",
@@ -175,6 +182,7 @@ def generate_launch_description():
             drive_node,
             # joystick_node,
             # teleop_joy_node,
+            tof_node,
             imu_node,
             imu_madgwick_node,
         ]

@@ -8,7 +8,7 @@
             "name": "Joy Drive",
             "type": "ros",
             "request": "launch",
-            "target": "/home/mw/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick_drive.launch.py"
+            "target": "/workspaces/isaac_ros-dev/ros_ws/src/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/joystick_drive.launch.py"
         },
         {
             "name": "No Joy",
@@ -17,10 +17,10 @@
             "target": "/workspaces/isaac_ros-dev/ros_ws/src/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/no_joystick.launch.py"
         },
         {
-            "name": "Lidar",
+            "name": "Drive",
             "type": "ros",
             "request": "launch",
-            "target": "/home/mw/robot_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_launch.py"
+            "target": "/workspaces/isaac_ros-dev/ros_ws/src/robot_ws/install/my_drive_pkg/share/my_drive_pkg/launch/drive.launch.py"
         },
     ]
 }

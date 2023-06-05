@@ -124,21 +124,21 @@ def generate_launch_description():
         output="screen",
     )
     # ICM-20948 9-dof IMU node
-    # imu_node = Node(
-    #     package='ros_qwiic_icm_20948',
-    #     executable='ros_qwiic_icm_20948',
-    #     name='ros_qwiic_icm_20948',
-    #     output='screen',
-    #     parameters=[{'topicImu': '/imu/data_raw', 'use_sim_time': use_sim_time}],
-    # )
-    # Madgwick filter node
-    imu_madgwick_node = Node(
-        package="imu_filter_madgwick",
-        executable="imu_filter_madgwick_node",
-        name="imu_filter_madgwick",
-        output="screen",
-        parameters=[str(share_path / "config/imu_filter.yaml"), {"use_sim_time": use_sim_time}],
+    imu_node = Node(
+        package='ros_qwiic_icm_20948',
+        executable='ros_qwiic_icm_20948',
+        name='ros_qwiic_icm_20948',
+        output='screen',
+        parameters=[{'topicImu': '/imu/data_raw', 'use_sim_time': use_sim_time}],
     )
+    # Madgwick filter node
+    # imu_madgwick_node = Node(
+    #     package="imu_filter_madgwick",
+    #     executable="imu_filter_madgwick_node",
+    #     name="imu_filter_madgwick",
+    #     output="screen",
+    #     parameters=[str(share_path / "config/imu_filter.yaml"), {"use_sim_time": use_sim_time}],
+    # )
 
     return LaunchDescription(
         [
@@ -154,7 +154,7 @@ def generate_launch_description():
             lcd_driver_node,
             click_2d_node,
             drive_node,
-            # imu_node,
-            imu_madgwick_node,
+            imu_node,
+            # imu_madgwick_node,
         ]
     )

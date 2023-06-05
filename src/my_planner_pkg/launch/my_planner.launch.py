@@ -93,8 +93,8 @@ def generate_launch_description():
                 'node_names': [
                     'controller_server',
                     'planner_server',
+                    'behavior_server',
                     # 'nav2_costmap_2d',
-                    'recoveries_server',
                     # 'map_server',
                     'bt_navigator',
                 ]
@@ -110,7 +110,7 @@ def generate_launch_description():
             # nav2_costmap_2d_node,
             # map_server_node,
             nav2_bt_navigator_node,
-            collision_monitor_cmd_node,
             nav2_lifecycle_manager_node,
+            collision_monitor_cmd_node,
         ]
     )
